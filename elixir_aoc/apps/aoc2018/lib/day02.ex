@@ -1,46 +1,66 @@
-defmodule Aoc2018.Day2 do
+defmodule Aoc2018.Day02 do
   use Aoc2018
 
-  def part1(file) do
-    case File.read(file) do
-      {:ok, body} -> body
-                      |> parse
-                      |> Enum.sum
-      {:error, reason} -> IO.puts(reason)
-    end
+  def part1(input) do
+    counts = input
+    |> String.split(~r/\n|, /)
+    |> Enum.map(&String.graphemes/1)
+    |> Enum.map(&Enum.frequencies/1)
+
+    two_counts = counts
+    |> Enum.filter(fn arr -> Enum.any?(arr, fn ({key, value}) -> value == 2 end) end)
+    |> Enum.count()
+
+    three_counts = counts
+    |> Enum.filter(fn arr -> Enum.any?(arr, fn ({key, value}) -> value == 3 end) end)
+    |> Enum.count()
+
+    two_counts*three_counts
   end
 
-  def part2(file) do
-    case File.read(file) do
-      {:ok, body} -> body
-                      |> parse
-                      |> Stream.cycle()
-                      |> r
-      {:error, reason} -> IO.puts(reason)
-    end
-  end
+  def part2(input) do
+    # sort alphabetically
+    # compare each consecutive
+    # sort backwards alphabetically
+    # compare each consecutive
 
-  defp parse(input) do
-    input
-    |> String.split("\n", trim: true)
-    |> Enum.map(&String.to_integer/1)
-  end
+    forwards = input
+    |> String.split(~r/\n|, /)
+    |> Enum.sort()
+    |> Enum.chunk_every(2, 1, :discard)
+    |> Enum.find(fn (arr) ->
+      zipped_chars = Enum.zip(String.graphemes(Enum.at(arr, 0)), String.graphemes(Enum.at(arr, 1)))
+      count = Enum.count(zipped_chars, fn arr -> elem(arr, 0) != elem(arr, 1) end)
 
-  defp r(stream) do
-    Enum.reduce_while(stream, {0, MapSet.new()}, fn stream, {last, visited} ->
-      # IO.puts(last)
-      # IO.inspect(visited)
-      resulting_frequency = last + stream
-
-      # IO.inspect(resulting_frequency)
-      if MapSet.member?(visited, resulting_frequency) do
-        {:halt, resulting_frequency}
-      else
-        {:cont, {resulting_frequency, MapSet.put(visited, resulting_frequency)}}
-      end
+      count == 1
     end)
-  end
-end
 
-# IO.puts(Day1.part1("day1.txt"))
-# IO.inspect(Day1.part2("day1.txt"))
+    if forwards do
+      Enum.zip(String.graphemes(Enum.at(forwards, 0)), String.graphemes(Enum.at(forwards, 1)))
+      |> Enum.filter(fn tup -> elem(tup, 0) == elem(tup, 1) end)
+      |> Enum.unzip()
+      |> elem(0)
+      |> Enum.join()
+    else
+      IO.puts("was backwards")
+      backwards = input
+      |> String.split(~r/\n|, /)
+      |> Enum.sort()
+      |> Enum.reverse()
+      |> Enum.chunk_every(2, 1, :discard)
+      |> Enum.find(fn (arr) ->
+        zipped_chars = Enum.zip(String.graphemes(Enum.at(arr, 0)), String.graphemes(Enum.at(arr, 1)))
+        count = Enum.count(zipped_chars, fn arr -> elem(arr, 0) != elem(arr, 1) end)
+
+        count == 1
+      end)
+
+      Enum.zip(String.graphemes(Enum.at(backwards, 0)), String.graphemes(Enum.at(backwards, 1)))
+      |> Enum.filter(fn tup -> elem(tup, 0) == elem(tup, 1) end)
+      |> Enum.unzip()
+      |> elem(0)
+      |> Enum.join()
+    end
+  end
+
+end
