@@ -46,7 +46,6 @@ defmodule Aoc2018 do
     |> String.split(".")
     |> Enum.at(2)
     |> Macro.underscore()
-    |> String.replace(~r/(\w)(\d)/, "\\1_\\2")
   end
 
   defp trim(text, false), do: String.trim_trailing(text, "\n")

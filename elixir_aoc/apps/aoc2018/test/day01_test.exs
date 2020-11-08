@@ -1,5 +1,4 @@
 defmodule Aoc2018.Day01Test do
-  # use ExUnit.Case
   use Aoc2018.FancyCase
 
   import Aoc2018.Day01
@@ -21,7 +20,7 @@ defmodule Aoc2018.Day01Test do
     end
 
     test_with_puzzle_input do
-      assert 531 = puzzle_input() |> part1()
+      assert 445 = puzzle_input() |> part1()
     end
   end
 
@@ -47,7 +46,7 @@ defmodule Aoc2018.Day01Test do
     end
 
     test_with_puzzle_input do
-      assert 76787 = puzzle_input() |> part2()
+      assert 219 = puzzle_input() |> part2()
     end
   end
 end
