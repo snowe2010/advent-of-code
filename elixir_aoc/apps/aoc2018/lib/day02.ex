@@ -2,6 +2,17 @@ defmodule Aoc2018.Day02 do
   use Aoc2018
 
   def part1(input) do
+    # IO.puts("input " <> input)
+
+    # IO.puts "asldkfj"
+    # input
+    # |> String.split(~r/\n|, /)
+    # |> String.graphemes()
+    # |> IO.inspect()
+    # |> Enum.group_by(& &1)
+    # |> IO.inspect()
+    # IO.puts "asldkfj"
+
     counts = input
     |> String.split(~r/\n|, /)
     |> Enum.map(&String.graphemes/1)
