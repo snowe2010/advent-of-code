@@ -5,14 +5,6 @@ defmodule AdventOfCodeTest do
     Module.concat(:AdventOfCode, Module.concat(mod_year, mod_day))
   end
 
-  # Helpers to make the iex experience a bit smoother
-  def part1(), do: part1(get_date().day, get_date().year)
-  def part2(), do: part2(get_date().day, get_date().year)
-  def part1(day), do: part1(day, get_date().year)
-  def part2(day), do: part2(day, get_date().year)
-  def part1(day, year), do: module_name(year, day).part1()
-  def part2(day, year), do: module_name(year, day).part2()
-
   defp get_date() do
     case DateTime.now("America/Toronto") do
       {:ok, d} -> d
@@ -23,10 +15,10 @@ defmodule AdventOfCodeTest do
   defmacro aoc_test(year, day, do: body) do
     quote do
       defmodule unquote(test_module_name(year, day)) do
-        @path "priv/#{unquote(year)}/#{unquote(day)}.txt"
+        @path "input/day#{unquote(day)}.txt"
 
         @behaviour AdventOfCode
-
+        use AdventOfCode.FancyCase
         import unquote(module_name(year, day))
 
         def input_path, do: @path
