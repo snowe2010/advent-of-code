@@ -23,12 +23,12 @@ defmodule AdventOfCodeTest do
 
         def input_path, do: @path
 
-        def input_stream do
-          @path
-          |> Path.expand()
-          |> File.stream!()
-          |> Stream.map(&String.trim/1)
-        end
+        # def input_stream do
+        #   @path
+        #   |> Path.expand()
+        #   |> File.stream!()
+        #   |> Stream.map(&String.trim/1)
+        # end
 
         unquote(body)
       end

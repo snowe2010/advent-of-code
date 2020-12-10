@@ -81,6 +81,6 @@ defmodule AdventOfCode do
     end
   end
 
-  @callback part1() :: any()
-  @callback part2() :: any()
+  @callback part1(nonempty_list()) :: any()
+  @callback part2(nonempty_list()) :: any()
 end

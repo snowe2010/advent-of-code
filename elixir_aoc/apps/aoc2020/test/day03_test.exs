@@ -18,11 +18,11 @@ aoc_test 2020, 3 do
         ".#..#...#.#",
       ]
 
-      assert 2 = input |> part1()
+      assert 7 = input |> part1()
     end
 
     test "full input has ? valid passwords" do
-      assert 483 = part1(input_stream())
+      assert 167 = part1(input_stream())
     end
   end
 
@@ -43,11 +43,11 @@ aoc_test 2020, 3 do
         ".#..#...#.#",
       ]
 
-      assert 1 = input |> part2()
+      assert 336 = input |> part2()
     end
 
-    # test "full input has ? valid passwords" do
-    #   assert 483 = part2()
-    # end
+    test "full input has ? valid passwords" do
+      assert 736527114 = part2(input_stream())
+    end
   end
 end
