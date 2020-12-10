@@ -47,7 +47,7 @@ aoc_test 2020, 2 do
 
 
     test "full input has ? valid passwords" do
-      assert 483 = part2()
+      assert 482 = part2()
     end
   end
 end
