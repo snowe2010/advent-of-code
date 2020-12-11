@@ -29,7 +29,6 @@ aoc 2020, 2 do
     Enum.member?(String.to_integer(min)..String.to_integer(max), num)
   end
 
-
   def part2() do
     stream()
     |> part2s
@@ -46,21 +45,27 @@ aoc 2020, 2 do
   defp is_pw_correct_with_new_policy?(pw) do
     captures = parse_password_and_requirements(pw)
 
-    codepoints = captures["pw"]
-                 |> String.codepoints()
+    codepoints =
+      captures["pw"]
+      |> String.codepoints()
 
-    first_matches = Enum.at(codepoints, String.to_integer(captures["min"])-1) == captures["letter"]
-    last_matches = Enum.at(codepoints, String.to_integer(captures["max"])-1) == captures["letter"]
+    first_matches =
+      Enum.at(codepoints, String.to_integer(captures["min"]) - 1) == captures["letter"]
+
+    last_matches =
+      Enum.at(codepoints, String.to_integer(captures["max"]) - 1) == captures["letter"]
 
     first_matches != last_matches
   end
 
   defp parse_password_and_requirements(pw) do
-    Regex.named_captures(~r/^(?<min>\d+)-(?<max>\d+) (?<letter>[[:alpha:]]): (?<pw>[[:alpha:]]+)$/, pw)
+    Regex.named_captures(
+      ~r/^(?<min>\d+)-(?<max>\d+) (?<letter>[[:alpha:]]): (?<pw>[[:alpha:]]+)$/,
+      pw
+    )
   end
 
   defp stream(), do: input_stream()
-    # |> Stream.map(&String.to_integer/1)
-    # |> Enum.sort()
-
+  # |> Stream.map(&String.to_integer/1)
+  # |> Enum.sort()
 end

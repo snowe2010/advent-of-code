@@ -6,7 +6,7 @@ aoc 2020, 3 do
     |> Enum.with_index()
     |> Enum.count(fn {current_row, index} ->
       # IO.inspect("Text: " <> current_row <> " Index: " <> Integer.to_string(index) <> " mult: " <> Integer.to_string(index * 3))
-      char_at_point = String.at(String.duplicate(current_row, index), index*3)
+      char_at_point = String.at(String.duplicate(current_row, index), index * 3)
       char_at_point == "#"
     end)
   end
@@ -19,6 +19,7 @@ aoc 2020, 3 do
       {7, 1, input},
       {1, 2, input},
     ]
+
     mps
     |> Enum.map(&find_trees_with_slope/1)
     |> multiply_trees_from_all_slopes()
@@ -29,18 +30,17 @@ aoc 2020, 3 do
     |> Enum.take_every(fall)
     |> Enum.with_index()
     |> Enum.count(fn {current_row, index} ->
-      char_at_point = String.at(String.duplicate(current_row, index), index*run)
+      char_at_point = String.at(String.duplicate(current_row, index), index * run)
       char_at_point == "#"
     end)
   end
 
   defp multiply_trees_from_all_slopes(input) do
     input
-    |> Enum.reduce(fn x, acc -> x * acc end)
+    |> Enum.reduce(&(&1 * &2))
   end
 
   defp stream(), do: input_stream()
-    # |> Stream.map(&String.to_integer/1)
-    # |> Enum.sort()
-
+  # |> Stream.map(&String.to_integer/1)
+  # |> Enum.sort()
 end

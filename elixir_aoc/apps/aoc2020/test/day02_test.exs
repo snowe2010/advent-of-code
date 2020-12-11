@@ -1,13 +1,12 @@
 import AdventOfCodeTest
 
 aoc_test 2020, 2 do
-
   describe "part1/1" do
     test "test input has 2 valid passwords" do
       input = [
-      "1-3 a: abcde",
-      "1-3 b: cdefg",
-      "2-9 c: ccccccccc"
+        "1-3 a: abcde",
+        "1-3 b: cdefg",
+        "2-9 c: ccccccccc"
       ]
 
       assert 2 = input |> part1s()
@@ -18,13 +17,12 @@ aoc_test 2020, 2 do
     end
   end
 
-
   describe "part2/1" do
     test "test input has 1 valid passwords" do
       input = [
-      "1-3 a: abcde",
-      "1-3 b: cdefg",
-      "2-9 c: ccccccccc"
+        "1-3 a: abcde",
+        "1-3 b: cdefg",
+        "2-9 c: ccccccccc"
       ]
 
       assert 1 = input |> part2s()
@@ -44,7 +42,6 @@ aoc_test 2020, 2 do
 
       assert 5 = input |> part2s()
     end
-
 
     test "full input has ? valid passwords" do
       assert 482 = part2()

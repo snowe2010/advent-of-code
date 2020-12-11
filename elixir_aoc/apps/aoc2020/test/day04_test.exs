@@ -275,7 +275,7 @@ aoc_test 2020, 4 do
     end
     
     test "full input has ? valid passwords" do
-      assert 190 = part2(input_stream())
+      assert 147 = part2(input_stream())
     end
   end
 end
