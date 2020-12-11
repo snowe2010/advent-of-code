@@ -61,7 +61,7 @@ defmodule Mix.Tasks.NewDay do
     day = String.replace(@new_day_file, "<day>", Integer.to_string(new_day))
     day_test = String.replace(@new_day_test_file, "<day>", Integer.to_string(new_day))
     File.write!("lib/day" <> Integer.to_string(new_day) <> ".ex", day)
-    File.write!("test/day" <> Integer.to_string(new_day) <> "_test.ex", day_test)
+    File.write!("test/day" <> Integer.to_string(new_day) <> "_test.exs", day_test)
     File.write!("input/day" <> Integer.to_string(new_day) <> ".txt", "")
   end
 end
