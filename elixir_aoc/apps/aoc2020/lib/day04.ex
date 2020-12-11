@@ -34,10 +34,10 @@ aoc 2020, 4 do
 
   defp map_fields_to_requirements(passport) do
     requirements = [
-      byr: ~r/^19[2-9][0-9]|200[0-2]$/,
-      iyr: ~r/^201[0-9]|2020$/,
-      eyr: ~r/^202[0-9]|2030$/,
-      hgt: ~r/^1[5-8][0-9]cm|19[0-3]cm|59in|6[0-9]in|7[0-6]in$/,
+      byr: ~r/^(19[2-9][0-9]|200[0-2])$/,
+      iyr: ~r/^(201[0-9]|2020)$/,
+      eyr: ~r/^(202[0-9]|2030)$/,
+      hgt: ~r/^(1[5-8][0-9]cm|19[0-3]cm|59in|6[0-9]in|7[0-6]in)$/,
       hcl: ~r/^#[0-9a-f]{6}$/,
       ecl: ~r/^(amb|blu|brn|gry|grn|hzl|oth)$/,
       pid: ~r/^[0-9]{9}$/
