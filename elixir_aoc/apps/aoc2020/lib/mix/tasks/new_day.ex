@@ -27,12 +27,14 @@ defmodule Mix.Tasks.NewDay do
         assert 0 = part1(input)
       end
 
+      @tag :skip
       test "full input" do
         assert 0 = part1(input_stream())
       end
     end
 
     describe "part2/1" do
+      @tag :skip
       test "test input" do
         input = [
         ]
@@ -40,6 +42,7 @@ defmodule Mix.Tasks.NewDay do
         assert 0 = part2(input)
       end
 
+      @tag :skip
       test "full input" do
         assert 0 = part2(input_stream())
       end
