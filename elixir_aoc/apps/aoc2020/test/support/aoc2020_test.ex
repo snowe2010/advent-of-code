@@ -17,7 +17,7 @@ defmodule AdventOfCodeTest do
       defmodule unquote(test_module_name(year, day)) do
         @path "input/day#{unquote(day)}.txt"
 
-        @behaviour AdventOfCode
+#        @behaviour AdventOfCode
         use AdventOfCode.FancyCase
         import unquote(module_name(year, day))
 

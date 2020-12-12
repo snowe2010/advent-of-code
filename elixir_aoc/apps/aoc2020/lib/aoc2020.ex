@@ -80,7 +80,7 @@ defmodule AdventOfCode do
       _ -> Date.utc_today()
     end
   end
-
-  @callback part1(nonempty_list()) :: any()
-  @callback part2(nonempty_list()) :: any()
+#
+#  @callback part1(nonempty_list()) :: any()
+#  @callback part2(nonempty_list()) :: any()
 end
