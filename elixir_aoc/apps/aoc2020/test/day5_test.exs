@@ -9,7 +9,7 @@ aoc_test 2020, 5 do
 
       assert 357 = part1(input)
     end
-    
+
     test "test input 2" do
       input = [
         "BFFFBBFRRR"
@@ -17,7 +17,7 @@ aoc_test 2020, 5 do
 
       assert 567 = part1(input)
     end
-    
+
     test "test input 3" do
       input = [
         "FFFBBBFRRR"
@@ -25,7 +25,7 @@ aoc_test 2020, 5 do
 
       assert 119 = part1(input)
     end
-    
+
     test "test input 4" do
       input = [
         "BBFFBBFRLL"
@@ -50,14 +50,37 @@ aoc_test 2020, 5 do
     end
   end
 
-  @tag :skip
   describe "part2/1" do
     @tag :skip
-    test "test input" do
+    test "finding all seats" do
       input = [
+        "FFFFFFFLLL",
+        "FFFFFFFLLR",
+        "FFFFFFFLRL",
+        "FFFFFFFLRR",
+        "FFFFFFFRLL",
+        "FFFFFFFRLR",
+        "FFFFFFFRRL",
+        "FFFFFFFRRR",
+        "FBFBBFFRLR",
+        "BFFFBBFRRR",
+        "FFFBBBFRRR",
+        "BBFFBBFRLL",
       ]
 
-      assert 0 = part2(input)
+      assert 820 = part2(input)
+    end
+    
+    @tag :skip
+    test "test input multiple finds correct high id" do
+      input = [
+        "FBFBBFFRLR",
+        "BFFFBBFRRR",
+        "FFFBBBFRRR",
+        "BBFFBBFRLL",
+      ]
+
+      assert 820 = part2(input)
     end
 
     @tag :skip
