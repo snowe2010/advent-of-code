@@ -30,17 +30,30 @@ aoc_test 2020, 6 do
   end
 
   describe "part2/1" do
-    @tag :skip
     test "test input" do
       input = [
+        "abc",
+        "",
+        "a",
+        "b",
+        "c",
+        "",
+        "ab",
+        "ac",
+        "",
+        "a",
+        "a",
+        "a",
+        "a",
+        "",
+        "b",
       ]
 
-      assert 0 = part2(input)
+      assert 6 = part2(input)
     end
 
-    @tag :skip
     test "full input" do
-      assert 0 = part2(input_stream())
+      assert 3290 = part2(input_stream())
     end
   end
 end
