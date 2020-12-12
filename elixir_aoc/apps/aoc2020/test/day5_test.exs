@@ -51,8 +51,7 @@ aoc_test 2020, 5 do
   end
 
   describe "part2/1" do
-    @tag :skip
-    test "finding all seats" do
+    test "find missing seat 6" do
       input = [
         "FFFFFFFLLL",
         "FFFFFFFLLR",
@@ -60,32 +59,15 @@ aoc_test 2020, 5 do
         "FFFFFFFLRR",
         "FFFFFFFRLL",
         "FFFFFFFRLR",
-        "FFFFFFFRRL",
+#        "FFFFFFFRRL",
         "FFFFFFFRRR",
-        "FBFBBFFRLR",
-        "BFFFBBFRRR",
-        "FFFBBBFRRR",
-        "BBFFBBFRLL",
       ]
 
-      assert 820 = part2(input)
+      assert 6 = part2(input)
     end
     
-    @tag :skip
-    test "test input multiple finds correct high id" do
-      input = [
-        "FBFBBFFRLR",
-        "BFFFBBFRRR",
-        "FFFBBBFRRR",
-        "BBFFBBFRLL",
-      ]
-
-      assert 820 = part2(input)
-    end
-
-    @tag :skip
     test "full input" do
-      assert 0 = part2(input_stream())
+      assert 629 = part2(input_stream())
     end
   end
 end
