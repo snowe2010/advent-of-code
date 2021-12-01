@@ -9,7 +9,7 @@ fun day01() {
     execute("01", "2") { lines ->
         lines.map { it.toInt() }
             .windowed(3)
-            .map { (a, b, c) -> a + b + c }
+            .map { it.sum() }
             .windowed(2)
             .count { (a, b) -> b > a }
     }
