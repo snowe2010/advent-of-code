@@ -7,10 +7,9 @@ fun day01() {
         lines.map { it.toInt() }.windowed(2).count { (a, b) -> b > a }
     }
     execute("2021", "01", "2") { lines ->
+        // turns out that b + c + d  > a + b + c is the same as d > a since b and c cancel out
         lines.map { it.toInt() }
-            .windowed(3)
-            .map { it.sum() }
-            .windowed(2)
-            .count { (a, b) -> b > a }
+            .windowed(4)
+            .count { (a,_,_,d) -> d > a }
     }
 }
