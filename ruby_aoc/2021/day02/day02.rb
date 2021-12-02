@@ -3,15 +3,11 @@
 require_relative '../helpers/input_reader'
 
 execute(1) do |lines|
-  hp = 0
-  depth = 0
+  hsh = Hash.new(0)
   lines.map(&:split).each do |dir, amount|
-    a=amount.to_i
-    hp += a if dir == 'forward'
-    depth -= a if dir == 'up'
-    depth += a if dir == 'down'
+    hsh[dir] += amount.to_i
   end
-  [hp, depth]
+  hsh["forward"] * (hsh["down"] - hsh["up"])
 end
 
 # execute(2) do |lines|
