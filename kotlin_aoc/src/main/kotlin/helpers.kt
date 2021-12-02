@@ -1,31 +1,30 @@
 import java.io.File
-import java.nio.file.Paths
 
-fun execute(year: String, day: String, part: String, block: (List<String>) -> Any) {
-    println("=======================")
-    println("Year $year Day $day Part $part")
-    println("=======================")
-    println()
-    print("Test: ")
-    test(year, day, block)
-    print("Real: ")
-    real(year, day, block)
-    println()
+class AocDay(private val year: Int, private val day: Int) {
+    private val realLines = File("src/main/resources/aoc$year", "day$day.real.txt").readLines()
+    private val testLines = File("src/main/resources/aoc$year", "day$day.test.txt").readLines()
+
+    fun execute(part: Int, block: (List<String>) -> Any) {
+        println("=======================")
+        println("Year $year Day $day Part $part")
+        println("=======================")
+        println()
+        print("Test: ")
+        test(block)
+        print("Real: ")
+        real(block)
+        println()
+    }
+
+    fun test(block: (List<String>) -> Any) {
+        println(block.invoke(testLines))
+    }
+
+    fun real(block: (List<String>) -> Any) {
+        println(block.invoke(realLines))
+    }
 }
 
-fun test(year: String, day: String, block: (List<String>) -> Any) {
-    val readLines: List<String> = getInput(year,"day$day.example.txt").readLines()
-    val message = block.invoke(readLines)
-    println(message)
-}
-
-fun real(year: String, day: String, block: (List<String>) -> Any) {
-    val readLines: List<String> = getInput(year, "day$day.real.txt").readLines()
-    val message = block.invoke(readLines)
-    println(message)
-}
-
-fun getInput(year: String, filename: String): File {
-    val projectFolder = Paths.get("").toAbsolutePath().toString()
-    return File("$projectFolder/src/main/resources/aoc$year/$filename")
+fun day(year: Int, day: Int, block: AocDay.() -> Any) {
+    block.invoke(AocDay(year, day))
 }
