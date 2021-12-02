@@ -37,6 +37,6 @@ end
 # golfed
 execute(2) do |lines|
   h,a,d=0,0,0
-  lines.map(&:split).each{|k, i|v=i.to_i;if k[?f];h+=v;d+=(a*v)end;a+=v if k[?n];a-=v if k[?u]}
+  lines.map(&:split).each{|k,i|v=i.to_i;if k[?f];h+=v;d+=(a*v)end;a+=v if k[?n];a-=v if k[?u]}
   p h*d
 end
