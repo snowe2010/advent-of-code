@@ -7,9 +7,22 @@ execute(1) do |lines|
   lines.map(&:split).each do |dir, amount|
     hsh[dir] += amount.to_i
   end
-  hsh["forward"] * (hsh["down"] - hsh["up"])
+  hsh['forward'] * (hsh['down'] - hsh['up'])
 end
 
-# execute(2) do |lines|
-# lines.map(&:to_i).each_cons(3).map { |a, b, c| a + b + c }.each_cons(2).count { |a, b| b > a }
-# end
+execute(2) do |lines|
+  hp = 0
+  aim = 0
+  depth = 0
+  lines.map(&:split).each do |dir, amount|
+    a = amount.to_i
+    if dir == 'forward'
+      hp += a
+      depth += aim * a
+    end
+    aim += a if dir == 'down'
+    aim -= a if dir == 'up'
+  end
+  puts "hp #{hp} aim #{aim} depth #{depth}"
+  hp * depth
+end
