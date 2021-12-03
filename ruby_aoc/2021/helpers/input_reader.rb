@@ -13,12 +13,12 @@ end
 
 def test
   filename = File.basename($0, '.rb')
-  output = yield File.read("#{filename}.test.txt").each_line.to_a
+  output = yield File.readlines("#{filename}.test.txt", chomp: true)
   puts output
 end
 
 def input
   filename = File.basename($0, '.rb')
-  output = yield File.read("#{filename}.real.txt").each_line.to_a
+  output = yield File.readlines("#{filename}.real.txt", chomp: true)
   puts output
 end
