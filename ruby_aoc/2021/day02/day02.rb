@@ -40,3 +40,11 @@ execute(2) do |lines|
   lines.map(&:split).each{|k,i|v=i.to_i;if k[?f];h+=v;d+=(a*v)end;a+=v if k[?n];a-=v if k[?u]}
   p h*d
 end
+
+#eval abuse golf https://www.reddit.com/r/adventofcode/comments/r6zd93/2021_day_2_solutions/hmwc4t3/
+$p=$a=$d=0
+f=->n{$p+=n;$d+=$a*n}
+d=->n{$a+=n}
+u=->n{$a-=n}
+eval ARGF.read.gsub(/(.).*(\d+)/,'\1[\2]')
+p $p*$d,$p*$a
