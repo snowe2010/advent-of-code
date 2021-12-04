@@ -23,7 +23,6 @@ def get_co2_scrubber_rating(depth, key_to_lines)
 end
 
 execute(1) do |lines|
-  p lines
   length = lines[0].split('').length
   sum = Array.new(length, 0)
   lines.map do |line|
