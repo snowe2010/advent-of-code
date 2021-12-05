@@ -27,48 +27,41 @@ def check_board_win(board)
   row_true || column_true
 end
 
-# puts "testing fake board"
-# fake_board_row_win = [[true, true, true], [false, false, false], [false, false, false]]
-# fake_board_column_win = [[true, false, false], [true, false, false], [true, false, false]]
-# fake_board_diagonal_win = [[true, false, false], [false, true, false], [false, false, true]]
-# fake_board_loss = [[false, true, false], [true, false, false], [false, false, true]]
-# p check_board_win(fake_board_row_win)
-# p check_board_win(fake_board_column_win)
-# p check_board_win(fake_board_diagonal_win)
-# p check_board_win(fake_board_loss)
-# test = [["14", "21", true, "24", true],
-#         ["10", "16", "15", true, "19"],
-#         ["18", "8", true, "26", "20"],
-#         ["22", true, "13", "6", true],
-#         ["2", "0", "12", "3", true]]
-# p check_board_win(test)
-# puts "testing fake board done"
-
-execute(1) do |lines|
-  input = lines[0].split(',')
-  p input
-  boards = create_boards lines
-  found = nil
-
-  input.each do |bingo_option|
+def play_bingo(inputs, boards)
+  found = false
+  winning_boards = []
+  inputs.each do |bingo_option|
     break if found
-    boards.each do |board|
-      break if found
-      board.each do |row|
+
+    indexes_to_delete = []
+    (0...boards.size).each do |board_index|
+      boards[board_index].each do |row|
         row.each_with_index do |elem, i|
           row[i] = true if elem == bingo_option
         end
       end
-      if check_board_win(board)
-        puts "board won!"
-        pp board
-        sum = board.flatten.reject { |i| i == true }.map(&:to_i).sum
-        p sum * bingo_option.to_i
-        found = sum * bingo_option.to_i
-      end
+      next unless check_board_win(boards[board_index])
+
+      sum = boards[board_index].flatten.reject { |i| i == true }.map(&:to_i).sum
+      winning_boards << [sum * bingo_option.to_i, boards[board_index]]
+      indexes_to_delete << board_index
     end
+    indexes_to_delete.sort.reverse.each do |i|
+      boards.delete_at(i)
+    end
+    found = true if boards.empty?
   end
+  winning_boards
 end
 
-# execute(2) do |lines|
-# end
+execute(1) do |lines|
+  input = lines[0].split(',')
+  boards = create_boards lines
+  play_bingo(input, boards)[0][0]
+end
+
+execute(2) do |lines|
+  input = lines[0].split(',')
+  boards = create_boards lines
+  play_bingo(input, boards)[-1][0]
+end

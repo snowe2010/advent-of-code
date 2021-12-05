@@ -1,3 +1,5 @@
+require 'pp'
+
 def execute(part, &block)
   puts "======"
   puts "Part #{part}"
@@ -14,11 +16,11 @@ end
 def test
   filename = File.basename($0, '.rb')
   output = yield File.readlines("#{filename}.test.txt", chomp: true)
-  puts output
+  pp output
 end
 
 def input
   filename = File.basename($0, '.rb')
   output = yield File.readlines("#{filename}.real.txt", chomp: true)
-  puts output
+  pp output
 end
