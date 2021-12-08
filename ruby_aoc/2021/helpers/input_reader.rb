@@ -5,11 +5,11 @@ def execute(part, test_only = false, &block)
   puts "Part #{part}"
   puts "======"
   puts
-  print "Test output: "
+  puts "Test output: "
   test &block
   puts
   unless test_only
-    print "Real output: "
+    puts "Real output: "
     input &block
     puts
   end
