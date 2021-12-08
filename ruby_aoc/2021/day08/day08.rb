@@ -14,6 +14,10 @@ execute(1) do |lines|
   count
 end
 
+execute(1, alternative_text: "Golf") do |lines|
+  lines.map{|l|l.split("|").last.split.select{[2,4,3,7].include?_1.size}.size}.sum
+end
+
 def find_1748(input)
   hsh = {}
   input.each do |code|
@@ -27,7 +31,7 @@ def find_1748(input)
           when 7
             8
           end
-    hsh[num] = code.split('')
+    hsh[num] = code.chars
   end
   hsh
 end
@@ -37,7 +41,7 @@ def find_ag(input)
   input.each do |code|
     arr << case code.size
            when 5, 6, 7
-             code.split('').sort
+             code.chars.sort
            end
   end
 
@@ -46,7 +50,7 @@ def find_ag(input)
 end
 
 def find_5(input)
-  input.map { |code| code.size == 5 ? code.split('') : nil }.compact
+  input.map { |code| code.size == 5 ? code.chars : nil }.compact
 end
 
 def find_2(five_chars, four)

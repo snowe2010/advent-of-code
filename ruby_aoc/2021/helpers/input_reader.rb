@@ -1,8 +1,8 @@
 require 'pp'
 
-def execute(part, test_only = false, &block)
+def execute(part, test_only = false, alternative_text: nil, &block)
   puts "======"
-  puts "Part #{part}"
+  puts "Part #{part} #{": #{alternative_text}" if alternative_text}"
   puts "======"
   puts
   puts "Test output: "
