@@ -1,34 +1,30 @@
+# frozen_string_literal: true
+
 require 'pp'
 require_relative '../helpers/input_reader'
 
-execute(1) do |lines|
-  points = Hash.new { |hash, key| hash[key] = 0 }
+def find_vents(lines, &block)
+  points = Hash.new(0)
   lines.each do |line|
     x1, y1, x2, y2 = line.sub(' -> ', ',').split(',').map(&:to_i)
-    puts "(#{x1},#{y1}) (#{x2},#{y2})"
-    next unless x1 == x2 || y1 == y2
-    # puts "here"
-    if x1 == x2
-      # puts "xs ="
-      low, high = [y1, y2].minmax
-      (low..high).each do |y|
-        # puts "x1==x2 (#{x1},#{y})"
-        points["#{x1},#{y}"] += 1
-      end
-    end
+    next unless block.call(x1, y1, x2, y2)
 
-    next unless y1 == y2
-    # puts "ys ="
-    low, high = [x1, x2].minmax
-    # puts "Low high #{low} #{high}"
-    (low..high).each do |x|
-      # puts "y1==y2 (#{x},#{y1})"
-      points["#{x},#{y1}"] += 1
+    points[[x1, y1]] += 1
+    x_step = x2 <=> x1
+    y_step = y2 <=> y1
+    until [x1, y1] == [x2, y2]
+      x1 += x_step
+      y1 += y_step
+      points[[x1, y1]] += 1
     end
   end
-  pp points
-  points.count {|_, sum| sum >= 2 }
+  points.count { |_, sum| sum >= 2 }
+end
+
+execute(1) do |lines|
+  find_vents(lines) { |x1, y1, x2, y2| x1 == x2 || y1 == y2 }
 end
 
 execute(2) do |lines|
+  find_vents(lines) { true }
 end
