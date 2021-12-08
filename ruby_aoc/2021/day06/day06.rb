@@ -3,22 +3,22 @@
 require 'pp'
 require_relative '../helpers/input_reader'
 
-execute(1) do |lines|
-  lanternfishies = lines[0].split(',').map(&:to_i)
-  80.times do
-    # p lanternfishies
-    new_fish = lanternfishies.count {|fish| fish == 0}
-    lanternfishies = lanternfishies.map do |lanternfish|
-      if lanternfish == 0
-        6
-      else
-        lanternfish-1
-      end
-    end
-    new_fish.times { lanternfishies << 8 }
+def count_fish(input, days)
+  lanternfishies = input.split(',').map(&:to_i).tally
+  lanternfishies.default = 0
+  days.times do
+    lanternfishies.transform_keys! {|k| k - 1}
+    lanternfishies[8] += lanternfishies[-1]
+    lanternfishies[6] += lanternfishies[-1]
+    lanternfishies.delete(-1)
   end
-  p lanternfishies.size
+  lanternfishies.values.sum
+end
+
+execute(1) do |lines|
+  count_fish lines[0], 80
 end
 
 execute(2) do |lines|
+  count_fish lines[0], 256
 end

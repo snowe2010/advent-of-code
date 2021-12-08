@@ -1,6 +1,6 @@
 require 'pp'
 
-def execute(part, &block)
+def execute(part, test_only = false, &block)
   puts "======"
   puts "Part #{part}"
   puts "======"
@@ -8,9 +8,11 @@ def execute(part, &block)
   print "Test output: "
   test &block
   puts
-  print "Real output: "
-  input &block
-  puts
+  unless test_only
+    print "Real output: "
+    input &block
+    puts
+  end
 end
 
 def test
