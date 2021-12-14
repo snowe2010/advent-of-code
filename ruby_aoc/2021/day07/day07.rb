@@ -12,13 +12,13 @@ execute(1, test_only = false) do |lines|
   end.min
 end
 
-execute(1, false, "Code Golf") do |lines|
+golf(1) do |lines|
   p=lines[0].split(',').map(&:to_i)
   m,n=p.minmax
   m.upto(n).map{|l|p.map{(_1-l).abs}.sum}.min
 end
 
-execute(2, false) do |lines|
+execute(2, test_only = false) do |lines|
   positions = lines[0].split(',').map(&:to_i)
   min, max = positions.minmax
 
@@ -29,7 +29,7 @@ execute(2, false) do |lines|
   end.min
 end
 
-execute(2, false, "code golf") do |lines|
+golf(2) do |lines|
   p=lines[0].split(',').map(&:to_i)
   m,n=p.minmax
   m.upto(n).map{|l|p.map{a=(_1-l).abs;(a**2+a)/2}.sum}.min
