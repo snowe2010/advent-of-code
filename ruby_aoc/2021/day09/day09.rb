@@ -27,7 +27,15 @@ execute(1) do |lines|
   risk_points.sum { |x, y| heightmap[y][x] + 1 }
 end
 
-golf(1) do |lines|
+
+def f(r,y)=r.each_with_index.map{|h,x|[x,y]if(x==0&&h<r[x+1])||(x==r.size-1&&h<r[x-1])||(r[x-1]>h&&h<r[x+1])}.compact
+
+golf(1) do |l|
+h=l.map(&:chars).map{ _1.map(&:to_i)}
+h.each_with_index.map{f _1,_2}.flatten(1).intersection(h.transpose
+.each_with_index.map{f _1,_2}
+.flatten(1)
+.map{[_2,_1]}).sum{h[_2][_1]+1}
 end
 
 execute(2) do |lines|
