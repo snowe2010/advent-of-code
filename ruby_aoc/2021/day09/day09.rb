@@ -38,7 +38,51 @@ h.each_with_index.map{f _1,_2}.flatten(1).intersection(h.transpose
 .map{[_2,_1]}).sum{h[_2][_1]+1}
 end
 
-execute(2) do |lines|
+def go_up(heightmap, x, y, passed_points=[])
+  return if y==0
+  find_region(heightmap, x, y - 1, passed_points)
+end
+
+def go_right(heightmap, x, y, passed_points=[])
+  return if x==heightmap[0].size-1
+  find_region(heightmap, x + 1, y, passed_points)
+end
+
+def go_down(heightmap, x, y, passed_points=[])
+  return if y==heightmap.size-1
+  find_region(heightmap, x, y + 1, passed_points)
+end
+
+def go_left(heightmap, x, y, passed_points=[])
+  return if x==0
+  find_region(heightmap, x-1, y, passed_points)
+end
+
+def find_region(heightmap, x, y, passed_points = [])
+  return if passed_points.include? [x, y]
+  return unless heightmap[y][x]
+  passed_points << [x, y]
+  go_up(heightmap, x, y, passed_points)
+  go_right(heightmap, x, y, passed_points)
+  go_down(heightmap, x, y, passed_points)
+  go_left(heightmap, x, y, passed_points)
+  passed_points.compact
+end
+
+execute(2, false) do |lines|
+  heightmap = lines.map(&:chars).map { _1.map {|i| i.to_i < 9} }
+  max_y = heightmap.size
+  max_x = heightmap[0].size
+
+  regions = []
+  max_y.times do |y|
+    max_x.times do |x|
+      if heightmap[y][x]
+        regions << find_region(heightmap, x, y)
+      end
+    end
+  end
+  regions.map(&:sort).uniq.map { |i| i.size }.sort.reverse.take(3).reduce {|acc, i| acc * i}
 end
 
 golf(2) do |lines|
