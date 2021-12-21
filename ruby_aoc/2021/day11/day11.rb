@@ -37,7 +37,7 @@ def flash(octopussies)
     break if flashing_octopussies.empty?
     flashing_octopussies.each do |octopus|
       unless octopus.flashed_this_step
-        puts "Flashing octopus [#{octopus.x}, #{octopus.y}] at energy level #{octopus.energy}"
+        # puts "Flashing octopus [#{octopus.x}, #{octopus.y}] at energy level #{octopus.energy}"
         octopus.flashed_this_step = true
         flash_count += 1
         increment_adjacent_octopussies octopussies, octopus
@@ -64,7 +64,6 @@ execute(1) do |lines|
   octopussies = parse_octopuses(lines)
   flash_count = 0
   100.times do |i|
-    puts "Step #{i}"
     increment_energy_level(octopussies)
     flash_count += flash(octopussies)
     energy_returns_to_zero(octopussies)
@@ -73,5 +72,17 @@ execute(1) do |lines|
   flash_count
 end
 
+
 execute(2) do |lines|
+  octopussies = parse_octopuses(lines)
+  step = 1
+  loop do
+    puts "Step #{step}"
+    increment_energy_level(octopussies)
+    flash(octopussies)
+    energy_returns_to_zero(octopussies)
+    break step if octopussies.all? {|line| line.all? {|oct| oct.energy == 0}}
+    step+=1
+  end
+  step
 end
