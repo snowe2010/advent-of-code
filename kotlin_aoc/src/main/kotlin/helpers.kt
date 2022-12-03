@@ -1,3 +1,5 @@
+package com.tyler
+
 import java.io.File
 
 class AocDay(private val year: Int, private val day: Int) {
@@ -27,4 +29,12 @@ class AocDay(private val year: Int, private val day: Int) {
 
 fun day(year: Int, day: Int, block: AocDay.() -> Any) {
     block.invoke(AocDay(year, day))
+}
+
+/**
+ * Provide a means to fluently tap into a chain of method calls so as not to need to declare unnecessary variables
+ * */
+public fun <T : Any, R> T.tap(tap: (T) -> R): T {
+    tap(this)
+    return this
 }
