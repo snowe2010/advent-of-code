@@ -11,7 +11,7 @@ year_dir = if ARGV[0].nil?
 day = if ARGV[1].nil?
             Pathname(year_dir).glob("day*").select(&:directory?).map(&:to_s).map { |dir| dir.delete_prefix("#{year_dir}/day").to_i}.max + 1
           else
-            ARGV[1].to_i
+            ARGV[1]
           end
 
 day_dir = "day#{day}"
