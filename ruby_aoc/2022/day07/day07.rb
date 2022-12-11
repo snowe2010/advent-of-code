@@ -5,7 +5,6 @@ require_relative '../helpers/input_reader'
 
 FileInfo = Struct.new('FileInfo', :size, :name)
 
-
 def recurse_directories(directory_name, lines)
   p lines
   hsh = Hash.new { |hash, key| hash[key] = [] }
@@ -46,9 +45,36 @@ def convert_nested_hashes_to_array(hash)
   end
   return sum
 end
+
 execute(1) do |lines|
-  directory_structure = recurse_directories( nil, lines)
-  convert_nested_hashes_to_array(directory_structure)
+  map = []
+  current_dir = ""
+  lines.map { |line| line.split(' ') }.each do |parts|
+    puts "Current parts #{parts}"
+    if parts[0] == "$"
+      if parts[1] == "cd"
+        if parts[2] == ".."
+          puts "Current directory before #{current_dir}"
+          current_dir = current_dir[0..-3]
+          puts "Current directory after #{current_dir}"
+        else
+          current_dir += parts[2] + "/"
+        end
+      elsif parts[1] == "ls"
+      end
+    elsif parts[0] == "dir"
+    else
+      map << [current_dir, parts[0], parts[1]]
+    end
+  end
+  grouped_by_dir= map.group_by {|parts| parts[0]}
+  p grouped_by_dir
+  # grouped_by_dir.sum{|k,v| }
+  # p map
+  # grouped_by_dir.map do |directory, files|
+  #   files.sum{|arr| arr[1].to_i}
+  # end.reject {|dir_size| dir_size>100000}#.sum{|a| a.to_i }
+  grouped_by_dir
 end
 
 execute(2) do |lines|
