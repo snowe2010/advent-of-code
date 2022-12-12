@@ -3,79 +3,84 @@
 require 'pp'
 require_relative '../helpers/input_reader'
 
-FileInfo = Struct.new('FileInfo', :size, :name)
+FileInfo = Struct.new('FileInfo', :size, :name, :files, :type)
 
 def recurse_directories(directory_name, lines)
   p lines
   hsh = Hash.new { |hash, key| hash[key] = [] }
+  current_dir = FileInfo.new
+  current_dir.name = directory_name
+  current_dir.files = []
+  current_dir.size = 0
+  current_dir.type = :dir
   until lines.empty?
     line = lines.shift
     puts "Current element #{line}"
     if line.start_with? "$ cd"
       new_directory_name = line.match(/\$ cd (?<name>.*)/).named_captures["name"]
       if new_directory_name == ".."
-        puts "Cding down a directory #{hsh}"
-        return hsh
+        size = current_dir.files.sum { |f| f.size }
+        current_dir.size = size
+        puts "CDing down a directory #{current_dir}"
+        puts "directory size is #{size}"
+        return current_dir
       end
       recurse_directories = recurse_directories(new_directory_name, lines)
-      hsh[directory_name] << recurse_directories
-      puts "Just recursed a directory #{hsh}"
-      hsh
+      current_dir.size += recurse_directories.size
+      current_dir.files << recurse_directories
+      puts "Just recursed a directory #{current_dir}"
+      current_dir
     else
       next if line.start_with? "$ ls" or line.start_with? "dir "
-      file = FileInfo.new(*line.split)
-      hsh[directory_name] << file
-      puts "Adding a regular line #{hsh}"
-      hsh
+      size, name = line.split
+      file = FileInfo.new(size.to_i, name)
+      current_dir.files << file
+      current_dir.size += size.to_i
+      file.type = :file
+      puts "Adding a regular line #{current_dir}"
+      current_dir
     end
   end
-  hsh
+  current_dir
 end
 
-def convert_nested_hashes_to_array(hash)
-  hash.each do |key, value|
-    sum = 0
-    value.each do |item|
-      if item.is_a? Hash
-        convert_nested_hashes_to_array(item)
-      else
-        sum += item.to_i
-      end
+
+def find_directory_by_size(struct)
+  directories = []
+  puts "current struct is #{struct}"
+  struct.files.each do |file|
+    puts "file is #{file}"
+    if file.type == :dir
+      puts "file type is directory"
+      directories << file
+      directories << find_directory_by_size(file)
     end
   end
-  return sum
+  puts "all directories I found? #{directories}"
+  return directories
 end
 
 execute(1) do |lines|
-  map = []
-  current_dir = ""
-  lines.map { |line| line.split(' ') }.each do |parts|
-    puts "Current parts #{parts}"
-    if parts[0] == "$"
-      if parts[1] == "cd"
-        if parts[2] == ".."
-          puts "Current directory before #{current_dir}"
-          current_dir = current_dir[0..-3]
-          puts "Current directory after #{current_dir}"
-        else
-          current_dir += parts[2] + "/"
-        end
-      elsif parts[1] == "ls"
-      end
-    elsif parts[0] == "dir"
-    else
-      map << [current_dir, parts[0], parts[1]]
-    end
-  end
-  grouped_by_dir= map.group_by {|parts| parts[0]}
-  p grouped_by_dir
-  # grouped_by_dir.sum{|k,v| }
-  # p map
-  # grouped_by_dir.map do |directory, files|
-  #   files.sum{|arr| arr[1].to_i}
-  # end.reject {|dir_size| dir_size>100000}#.sum{|a| a.to_i }
-  grouped_by_dir
+  directory_structure = recurse_directories(nil, lines)
+  directories = find_directory_by_size directory_structure
+  directories.flatten!
+  directories.map! { |struct| struct.size }
+             .reject! { |size| size > 100000 }
+             .sum
 end
 
 execute(2) do |lines|
+  # total = 70000000
+  needed_unused = 30000000
+  system_size = 70000000
+  directory_structure = recurse_directories(nil, lines)
+  directories = find_directory_by_size directory_structure
+  directories.flatten!
+  directories.map! { |struct| struct.size }
+  root = directory_structure.files[0].files.sum {|file| file.size }
+
+  current_unused = system_size - root
+  need_to_delete = needed_unused-current_unused
+  puts "need to delete size #{need_to_delete}"
+  directories.find_all {|a| a > need_to_delete }.min
 end
