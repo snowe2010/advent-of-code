@@ -1,10 +1,10 @@
 require 'pp'
 
 def golf(part, &block)
-  execute(part, false, "Code Golf", &block)
+  execute(part, test_only: false, alternative_text: "Code Golf", &block)
 end
 
-def execute(part, test_only = false, alternative_text = nil, test_file_suffix = '', &block)
+def execute(part, test_only: false, alternative_text: nil, test_file_suffix: '', &block)
   puts "======"
   puts "Part #{part} #{": #{alternative_text}" if alternative_text}"
   puts "======"

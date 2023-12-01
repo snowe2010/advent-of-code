@@ -7,7 +7,7 @@ def numeric?(lookAhead)
   lookAhead.match?(/[[:digit:]]/)
 end
 
-execute(1, false, "", test_file_suffix = "p1") do |lines|
+execute(1, test_file_suffix: "p1") do |lines|
   lines.inject(0) do |acc, line|
     d = line.chars.select { |num| numeric?(num) }
     acc += (d[0] + d.reverse[0]).to_i
@@ -39,4 +39,22 @@ execute(2) do |lines|
     e = last_num.chars.select { |num| numeric?(num) }
     acc += (d[0] + e[0]).to_i
   end
+end
+
+# 80 chars
+execute(1, alternative_text: "Code Golf 80 bytes", test_file_suffix: "p1") do |lines|
+  lines.inject(0){|a,l|d=l.chars.select{numeric?(_1)};a+=(d[0]+d.reverse[0]).to_i}
+end
+
+# 271 chars
+execute(1, alternative_text: "Code Golf 271 bytes", test_file_suffix: "p1") do |z|
+  z.inject(0) { |a, l|
+    w = %w(one two three four five six seven eight nine)
+    x = w.join(?|)
+    f = l.sub(/(#{x})/) { |k| map[k.to_sym] }
+    g = l.reverse.sub(/(#{x.reverse})/) { |k| map[k.reverse.to_sym] }
+    d = f.chars.select { |n| n.match?(/\d/) }
+    e = g.chars.select { |n| n.match?(/\d/) }
+    a += (d[0] + e[0]).to_i
+  }
 end
