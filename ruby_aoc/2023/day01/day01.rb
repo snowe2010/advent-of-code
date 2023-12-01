@@ -9,8 +9,8 @@ end
 
 execute(1, test_file_suffix: "p1") do |lines|
   lines.inject(0) do |acc, line|
-    d = line.chars.select { |num| numeric?(num) }
-    acc += (d[0] + d.reverse[0]).to_i
+    d = line.gsub(/\D/,'')
+    acc += (d[0] + d[-1]).to_i
   end
 end
 
@@ -41,9 +41,9 @@ execute(2) do |lines|
   end
 end
 
-# 80 chars
-execute(1, alternative_text: "Code Golf 80 bytes", test_file_suffix: "p1") do |lines|
-  lines.inject(0){|a,l|d=l.chars.select{numeric?(_1)};a+=(d[0]+d.reverse[0]).to_i}
+# 60 chars
+execute(1, alternative_text: "Code Golf 60 bytes", test_file_suffix: "p1") do |lines|
+  lines.inject(0){|a,l|d=l.gsub(/\D/,'');a+=(d[0]+d[-1]).to_i}
 end
 
 # 271 chars
