@@ -10,8 +10,7 @@ end
 execute(1, false, "", test_file_suffix = "p1") do |lines|
   lines.inject(0) do |acc, line|
     d = line.chars.select { |num| numeric?(num) }
-    var = (d[0] + d.reverse[0]).to_i
-    acc += var
+    acc += (d[0] + d.reverse[0]).to_i
   end
 end
 
