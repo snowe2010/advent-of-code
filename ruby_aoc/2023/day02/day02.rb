@@ -104,10 +104,35 @@ execute(2, alternative_text: "Code Golf Readable") do |games|
   p games_out
 end
 
-execute(2, alternative_text: "Code Golf") do |g|
+execute(2, alternative_text: "Code Golf 142 chars") do |g|
+p g.map{_1.sub!(/.*:/,'')
+m=Hash.new(0)
+_1.split(?;){|r|r.split(?,){|a|b,c=a.split
+m[c]=[m[c],b.to_i].max}}
+m.values.reduce(&:*)}.sum
+end
+
+
+# https://www.reddit.com/r/adventofcode/comments/188w447/2023_day_2_solutions/kbneo94/
+execute(2, alternative_text: "Code Golf modified cwby_bbop solution") do |games|
+  games_out = games.map do |line|
+    line.sub!(/.*:/,'')
+    maxes = Hash.new(0)
+    line.split(?;) do |round|
+      round.scan(/(\d+) (\w+)/).map do |k, v|
+        maxes[v] = [maxes[v], k.to_i].max
+      end
+    end
+    maxes.values.reduce(&:*)
+  end.sum
+  p games_out
+end
+
+
+# https://www.reddit.com/r/adventofcode/comments/188w447/2023_day_2_solutions/kbneo94/
+execute(2, alternative_text: "Code Golf modified cwby_bbop compressed") do |g|
 p g.map{|l|l.sub!(/.*:/,'')
 m=Hash.new(0)
-l.split(?;){|r|r.split(?,){|a|b,c=a.split
-m[c]=m[c]<b.to_i ? b.to_i: m[c]}}
-m.each_value.reduce(&:*)}.sum
+l.split(?;){|r|r.scan(/(\d+) (\w+)/){|k,v|m[v]=[m[v],k.to_i].max}}
+m.values.reduce(&:*)}.sum
 end
