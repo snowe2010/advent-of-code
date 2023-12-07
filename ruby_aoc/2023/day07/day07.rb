@@ -3,49 +3,37 @@
 require 'pp'
 require_relative '../helpers/input_reader'
 
-score_map = %w[. . J 2 3 4 5 6 7 8 9 T Q K A]
-execute(1) do |lines|
-  scores = lines.map do |line|
-    hand, bid = line.split
-    tally = hand.split('').tally
-    score = case
-            when tally.any? { |k, v| v == 5 }
-              # puts "five of a kind"
-              7
-            when tally.any? { |k, v| v == 4 }
-              # puts "four of a kind"
-              6
-            when tally.any? { |k, v| v == 3 } && tally.any? { |k, v| v == 2 }
-              #               puts "full house"
-              5
-            when tally.any? { |k, v| v == 3 } && tally.all? { |k, v| v != 2 }
-              #               puts "three of a kind"
-              4
-            when tally.any? { |k, v| v == 4 }
-              #               puts "four of a kind"
-              3
-            when tally.count { |k, v| v == 2 } == 2
-              #               puts "two pair"
-              2
-            when tally.one? { |k, v| v == 2 } && tally.all? { |k, v| v <= 2 }
-              #               puts "one pair"
-              1
-            when tally.all? { |k, v| v == 1 }
-              #               puts "high card"
-              0
-            else
-              puts "here?"
-            end
+def get_score tally
+  vals = tally.values
+  case
+  when vals.any?(5)
+    7
+  when vals.any?(4)
+    6
+  when vals.any?(3) && vals.any?(2)
+    5
+  when vals.any?(3) && tally.all? { |_, v| v != 2 }
+    4
+  when vals.any?(4)
+    3
+  when vals.count(2) == 2
+    2
+  when vals.one?(2) && tally.all? { |_, v| v <= 2 }
+    1
+  when vals.all?(1)
+    0
+  else
+    puts "here?"
   end
-  p scores
-  to_h = lines.zip(scores).to_h
-  p to_h
-  ranking = to_h.sort do |a, b|
+end
+
+def get_ranking(lines, score_map, scores)
+  lines.zip(scores).to_h.sort do |a, b|
     a_line, a_score = a
     b_line, b_score = b
     if a_score == b_score
-      a_hand, a_bid = a_line.split
-      b_hand, b_bid = b_line.split
+      a_hand, _ = a_line.split
+      b_hand, _ = b_line.split
       diff = a_hand.chars.zip(b_hand.chars).drop_while { |a, b| a == b }[0]
       card_1 = score_map.index(diff[0])
       card_2 = score_map.index(diff[1])
@@ -54,87 +42,46 @@ execute(1) do |lines|
       a_score <=> b_score
     end
   end
-  p ranking
+end
+
+def calculate_total_winnings(ranking)
   max_rank = ranking.size
   (1..max_rank).sum(0) do |rank|
     line = ranking[rank - 1]
-    hand, bid = line[0].split
+    _, bid = line[0].split
     bid.to_i * rank
   end
 end
 
+score_map_p1 = %w[. . 2 3 4 5 6 7 8 9 T J Q K A]
+score_map_p2 = %w[. . J 2 3 4 5 6 7 8 9 T Q K A]
+
+execute(1) do |lines|
+  scores = lines.map do |line|
+    hand, _ = line.split
+    tally = hand.split('').tally
+    get_score tally
+  end
+  ranking = get_ranking(lines, score_map_p1, scores)
+  calculate_total_winnings ranking
+end
+
 execute(2, test_only: false) do |lines|
   scores = lines.map do |line|
-    hand, bid = line.split
+    hand, _ = line.split
     hand_split = hand.split('')
     tally = hand_split.tally
     if hand_split.any? { |c| c == 'J' }
       highest_non_j = tally.reject { |k, v| k == 'J' }.max_by { |k, v| v }
-      begin
-        if highest_non_j.nil?
-          tally = { 'A': 5 }
-        else
-          tally[highest_non_j[0]] += tally['J']
-        end
-      rescue Exception => e
-        puts ''
+      if highest_non_j.nil?
+        tally = { 'A': 5 }
+      else
+        tally[highest_non_j[0]] += tally['J']
       end
-
       tally.delete('J')
     end
-    # p ""
-    score = case
-            when tally.any? { |k, v| v == 5 }
-              puts "five of a kind #{hand}"
-              7
-            when tally.any? { |k, v| v == 4 }
-              # puts "four of a kind"
-              6
-            when tally.any? { |k, v| v == 3 } && tally.any? { |k, v| v == 2 }
-              #               puts "full house"
-              5
-            when tally.any? { |k, v| v == 3 } && tally.all? { |k, v| v != 2 }
-              #               puts "three of a kind"
-              4
-            when tally.any? { |k, v| v == 4 }
-              #               puts "four of a kind"
-              3
-            when tally.count { |k, v| v == 2 } == 2
-              #               puts "two pair"
-              2
-            when tally.one? { |k, v| v == 2 } && tally.all? { |k, v| v <= 2 }
-              #               puts "one pair"
-              1
-            when tally.all? { |k, v| v == 1 }
-              #               puts "high card"
-              0
-            else
-              puts "here?"
-            end
+    get_score tally
   end
-  p scores
-  to_h = lines.zip(scores).to_h
-  p to_h
-  ranking = to_h.sort do |a, b|
-    a_line, a_score = a
-    b_line, b_score = b
-    if a_score == b_score
-      a_hand, a_bid = a_line.split
-      b_hand, b_bid = b_line.split
-      diff = a_hand.chars.zip(b_hand.chars).drop_while { |a, b| a == b }[0]
-      card_1 = score_map.index(diff[0])
-      card_2 = score_map.index(diff[1])
-      card_1 <=> card_2
-    else
-      a_score <=> b_score
-    end
-  end
-  p ranking
-  max_rank = ranking.size
-  (1..max_rank).sum(0) do |rank|
-    line = ranking[rank - 1]
-    hand, bid = line[0].split
-    bid.to_i * rank
-  end
-
+  ranking = get_ranking(lines, score_map_p2, scores)
+  calculate_total_winnings(ranking)
 end
