@@ -3,28 +3,19 @@
 require 'pp'
 require_relative '../helpers/input_reader'
 
-def get_score tally
+
+def get_score(tally)
   vals = tally.values
-  case
-  when vals.any?(5)
-    7
-  when vals.any?(4)
-    6
-  when vals.any?(3) && vals.any?(2)
-    5
-  when vals.any?(3) && tally.all? { |_, v| v != 2 }
-    4
-  when vals.any?(4)
-    3
-  when vals.count(2) == 2
-    2
-  when vals.one?(2) && tally.all? { |_, v| v <= 2 }
-    1
-  when vals.all?(1)
-    0
-  else
-    puts "here?"
-  end
+  map = {
+    ->(x) { x.any?(5) } => 7,
+    ->(x) { x.any?(4) } => 6,
+    ->(x) { x.any?(3) && x.any?(2) } => 5,
+    ->(x) { x.any?(3) && tally.all? { |_, v| v != 2 } } => 4,
+    ->(x) { x.count(2) == 2 } => 3,
+    ->(x) { x.one?(2) && tally.all? { |_, v| v <= 2 } } => 2,
+    ->(x) { x.all?(1) } => 1,
+  }
+  map.find { |lambda, _| lambda.call(vals) }[1]
 end
 
 def get_ranking(lines, score_map, scores)
