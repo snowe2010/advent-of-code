@@ -20,7 +20,7 @@ execute(1) do |lines|
   node_tree = {}
   lines[2..-1].map do |node_line|
     node, left, right = /(\w+) = \((\w+), (\w+)\)/.match(node_line).captures
-    node_tree[node] = { "L"=> left,"R"=> right }
+    node_tree[node] = { "L" => left, "R" => right }
   end
   count_steps_to_node(node_tree["AAA"], node_tree, instructions) { |i| i == "ZZZ" }
 end
@@ -31,8 +31,8 @@ execute(2, alternative_text: "LCM", test_only: false, test_file_suffix: "_p2") d
   lines[2..-1].map do |node_line|
     node, left, right = /(\w+) = \((\w+), (\w+)\)/.match(node_line).captures
     node_tree[node] = {
-      "L"=> left,
-      "R"=> right,
+      "L" => left,
+      "R" => right,
     }
   end
 
