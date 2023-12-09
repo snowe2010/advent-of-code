@@ -46,3 +46,8 @@ execute(2, test_only: false, test_file_suffix: '') do |lines|
     get_preceeding_readings(reading.split.map(&:to_i))
   end.map {|arr| arr[0]}.sum
 end
+
+execute(2, alternative_text: 'code golf') do |l|
+  a=->r{r.unshift(r.all?(0)?0:(r[0]-a[r.each_cons(2).map{_2-_1}][0]))}
+  l.map{a[_1.split.map(&:to_i)]}.map{_1[0]}.sum
+end
