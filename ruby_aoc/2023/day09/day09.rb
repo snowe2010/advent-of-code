@@ -42,12 +42,7 @@ end
 
 
 execute(2, test_only: false, test_file_suffix: '') do |lines|
-  outs = lines.map do |reading|
+  lines.map do |reading|
     get_preceeding_readings(reading.split.map(&:to_i))
-  end.map {|arr| arr[0]}
-
-  p outs
-
-  outs.sum
-
+  end.map {|arr| arr[0]}.sum
 end
